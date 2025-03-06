@@ -1,34 +1,27 @@
 #include <Arduino.h>
-#include <WiFi.h>
+#include <WiFiMulti.h>
 
 #define WIFI_SSID "mywifi"
 #define WIFI_PASSWORD "1234567890"
+
+WiFiMulti wifiMulti;
 
 void setup()
 {
   Serial.begin(921600);
   pinMode(LED_BUILTIN, OUTPUT);
 
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
 
-  Serial.println("Starting");
+  while (wifiMulti.run() != WL_CONNECTED)
+  {
+    delay(100);
+  }
+
+  Serial.println("Connected");
 }
-
-bool isConnected = false;
 
 void loop()
 {
-    if(WiFi.status() == WL_CONNECTED && !isConnected)    
-    {
-        Serial.println("connected");
-        digitalWrite(LED_BUILTIN, HIGH);
-        isConnected = true;
-    }
-    if (WiFi.status() != WL_CONNECTED)
-    {
-      Serial.println(".");
-      digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
-      delay(1000);
-      isConnected = false;      
-    }
+  digitalWrite(LED_BUILTIN, WiFi.status() == WL_CONNECTED);
 }
