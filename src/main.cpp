@@ -1,27 +1,101 @@
 #include <Arduino.h>
-#include <WiFiMulti.h>
 
-#define WIFI_SSID "mywifi"
-#define WIFI_PASSWORD "1234567890"
+#define D1 2
+/* International Morse Code
+H ....
+E .
+L .-..
+O ---
 
-WiFiMulti wifiMulti;
+W .--
+R .-.
+D -..
+*/
 
-void setup()
+
+void dot(bool isLast = false)
 {
-  Serial.begin(921600);
-  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(D1, HIGH);
+  delay(250);
+  digitalWrite(D1, LOW);
+  delay(isLast ? 750 : 250);
+}
 
-  wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
+void dash(bool isLast = false) 
+{
+  digitalWrite(D1, HIGH);
+  delay(600);
+  digitalWrite(D1, LOW);
+  delay(isLast ? 750 : 250);
+}
 
-  while (wifiMulti.run() != WL_CONNECTED)
-  {
-    delay(100);
-  }
+void H()
+{
+  dot();
+  dot();
+  dot();
+  dot(true);
+}
 
-  Serial.println("Connected");
+void e() 
+{
+  dot(true);
+}
+
+void l() 
+{
+  dot();
+  dash();
+  dot();
+  dot(true);
+}
+
+void o() 
+{
+  dash();
+  dash();  
+  dash(true);
+}
+
+void w() 
+{
+  dot();
+  dash();
+  dash(true);
+}
+void r()
+ {
+  dot();
+  dash();
+  dot(true);
+}
+
+void d()
+ { 
+  dash();
+  dot();
+  dot(true);
+}
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(D1, OUTPUT);
 }
 
 void loop()
 {
-  digitalWrite(LED_BUILTIN, WiFi.status() == WL_CONNECTED);
+  H();
+  e();
+  l();
+  l();
+  o();
+  delay(1000);
+  w();
+  o();
+  r();
+  l();
+  d();
+  Serial.println("Hello world");
+  delay(2000);
 }
+
