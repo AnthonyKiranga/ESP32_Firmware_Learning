@@ -1,101 +1,28 @@
 #include <Arduino.h>
 
-#define D1 2
-/* International Morse Code
-H ....
-E .
-L .-..
-O ---
+# define D5 5
+# define D1 4
 
-W .--
-R .-.
-D -..
-*/
-
-
-void dot(bool isLast = false)
+void setup()
 {
-  digitalWrite(D1, HIGH);
-  delay(250);
-  digitalWrite(D1, LOW);
-  delay(isLast ? 750 : 250);
-}
-
-void dash(bool isLast = false) 
-{
-  digitalWrite(D1, HIGH);
-  delay(600);
-  digitalWrite(D1, LOW);
-  delay(isLast ? 750 : 250);
-}
-
-void H()
-{
-  dot();
-  dot();
-  dot();
-  dot(true);
-}
-
-void e() 
-{
-  dot(true);
-}
-
-void l() 
-{
-  dot();
-  dash();
-  dot();
-  dot(true);
-}
-
-void o() 
-{
-  dash();
-  dash();  
-  dash(true);
-}
-
-void w() 
-{
-  dot();
-  dash();
-  dash(true);
-}
-void r()
- {
-  dot();
-  dash();
-  dot(true);
-}
-
-void d()
- { 
-  dash();
-  dot();
-  dot(true);
-}
-
-void setup() {
-  Serial.begin(115200);
-  pinMode(D1, OUTPUT);
+    Serial.begin(115200);
+    pinMode(D1, OUTPUT);
+    pinMode(D5,INPUT_PULLUP);
 }
 
 void loop()
 {
-  H();
-  e();
-  l();
-  l();
-  o();
-  delay(1000);
-  w();
-  o();
-  r();
-  l();
-  d();
-  Serial.println("Hello world");
-  delay(2000);
+    int output = digitalRead(D5);
+
+    if (output == HIGH)
+    {
+        Serial.println("High");
+        digitalWrite(D1, LOW);
+  }
+  else
+  {
+     Serial.println("Low");
+      digitalWrite(D1, HIGH);
+  }
 }
 
