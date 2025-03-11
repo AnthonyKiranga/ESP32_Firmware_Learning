@@ -17,12 +17,12 @@ void loop()
     if (output == HIGH)
     {
         Serial.println("High");
-        digitalWrite(D1, LOW);
+        digitalWrite(D1, HIGH);
   }
   else
   {
      Serial.println("Low");
-      digitalWrite(D1, HIGH);
+      digitalWrite(D1, LOW);
   }
 }
 
